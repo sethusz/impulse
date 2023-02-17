@@ -21,30 +21,34 @@ function showdate() {
 showTime();
 showdate()
 
-const greeting = document.querySelector('.greeting');
-
-
-// const dateGreeting = new Date();
-// const hours = dateGreeting.getHours();
-
-let hours = 0
 
 function getTimeOfDay() {
-  if (hours <= 6) {
-    greeting.textContent = 'Good night!';
-  } else if (hours <= 12) {
-    greeting.textContent = 'Good morning!';
-  } else if (hours <= 18) {
-    greeting.textContent = 'Good afternoon!';
-  } else if (hours <= 23) {
-    greeting.textContent = 'Good evening!';
+  const date = new Date();
+  const hours = date.getHours();
+
+  switch (true) {
+      case (hours >= 6 && hours < 12):
+          return 'morning';
+      case (hours >= 12 && hours < 18):
+          return 'afternoon';
+      case (hours >= 18 && hours < 24):
+          return 'evening';
+      default:
+          return 'night';
   }
 }
 
+function showGreeting() {
+  const timeOfDay = getTimeOfDay();
+  const greetingText = `Good ${timeOfDay}`;
+  const greetingElement = document.querySelector('.greeting');
+  greetingElement.textContent = greetingText;
+}
+
 getTimeOfDay()
+showGreeting()
 
 const nameGreeting = document.querySelector('.name');
-
 
 function setLocalStorage() {
   localStorage.setItem('name', nameGreeting.value);
@@ -58,3 +62,34 @@ function getLocalStorage() {
 }
 window.addEventListener('load', getLocalStorage)
 
+
+// slider
+const body = document.querySelector('body')
+const slideNext = document.querySelector('.slide-next');
+const slidePrev = document.querySelector('.slide-prev');
+let randomNum = getRandomNum()
+
+function getRandomNum() {
+  return Math.floor(Math.random() * 20) + 1;
+}
+
+function setBg() {
+  let timeOfDay = getTimeOfDay();
+  let bgNum = String(randomNum).padStart(2, "0");
+  body.style.backgroundImage = `url(https://raw.githubusercontent.com/MaximShtaba/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg)`;
+}
+
+setBg()
+
+function getSlideNext() {
+  randomNum === 20 ? 1 : randomNum++
+  setBg()
+}
+
+function getSlidePrev() {
+  randomNum === 1 ? 20 : randomNum--
+  setBg()
+}
+
+slideNext.addEventListener('click',  getSlideNext);
+slidePrev.addEventListener('click',  getSlidePrev);
