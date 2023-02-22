@@ -141,3 +141,118 @@ async function getQuote() {
 getQuote()
 
 button.addEventListener('click', getQuote)
+
+// Music 
+
+const audio = new Audio();
+
+const playPrevBtn = document.querySelector('.play-prev');
+const playBtn = document.querySelector('.play');
+const playNextBtn = document.querySelector('.play-next');
+const volumeSlider = document.querySelector('.volume-slider');
+
+const playList = document.querySelector('.play-list');
+const tracks = [
+  { name: 'Aqua Caelestis', src: '../assets/sounds/Aqua Caelestis.mp3' },
+  { name: 'River Flows In You', src: '../assets/sounds/River Flows In You.mp3' },
+  { name: 'Summer Wind', src: '../assets/sounds/Summer Wind.mp3' },
+  { name: 'Ennio Morricone', src: '../assets/sounds/Ennio Morricone.mp3' },
+];
+
+let currentTrackIndex = null;
+audio.src = '';
+
+function play() {
+  audio.play();
+  playBtn.classList.remove('play');
+  playBtn.classList.add('pause');
+  updateCurrentTrack();
+}
+
+function pause() {
+  audio.pause();
+  playBtn.classList.remove('pause');
+  playBtn.classList.add('play');
+  updateCurrentTrack();
+}
+
+function playPrev() {
+  if (currentTrackIndex === 0) {
+    currentTrackIndex = tracks.length - 1;
+  } else {
+    currentTrackIndex--;
+  }
+  audio.src = tracks[currentTrackIndex].src;
+  play();
+}
+
+function playNext() {
+  if (currentTrackIndex === tracks.length - 1) {
+    currentTrackIndex = 0;
+  } else {
+    currentTrackIndex++;
+  }
+  audio.src = tracks[currentTrackIndex].src;
+  play();
+  updateCurrentTrack();
+}
+
+function changeVolume() {
+  audio.volume = volumeSlider.value / 100;
+}
+
+function updateCurrentTrack() {
+  const links = playList.querySelectorAll('a');
+  links.forEach((link, index) => {
+    if (currentTrackIndex !== null && index === currentTrackIndex) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+}
+
+playBtn.addEventListener('click', function() {
+  if (audio.paused) {
+    if (currentTrackIndex === null) {
+      currentTrackIndex = 0;
+      audio.src = tracks[currentTrackIndex].src;
+    }
+    play();
+  } else {
+    pause();
+  }
+});
+
+playPrevBtn.addEventListener('click', playPrev);
+playNextBtn.addEventListener('click', playNext);
+volumeSlider.addEventListener('input', changeVolume);
+
+tracks.forEach((track, index) => {
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+  a.href = '#';
+  a.textContent = track.name;
+  a.addEventListener('click', function(event) {
+    event.preventDefault();
+    currentTrackIndex = index;
+    audio.src = tracks[currentTrackIndex].src;
+    play();
+  });
+  li.appendChild(a);
+  playList.appendChild(li);
+});
+
+updateCurrentTrack();
+
+const links = playList.querySelectorAll('a');
+
+links.forEach(link => {
+  link.addEventListener('click', function(event) {
+    event.preventDefault();
+    currentTrackIndex = Array.from(links).indexOf(link);
+    audio.src = tracks[currentTrackIndex].src;
+    play();
+  });
+});
+

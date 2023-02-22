@@ -9,6 +9,11 @@
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
+
 body {
   min-width: 480px;
   max-width: 1440px;
@@ -30,6 +35,7 @@ body {
   height: 30vh;
   min-height: 220px;  
   padding: 20px;
+  
 }
 
 .player-controls {
@@ -42,7 +48,9 @@ body {
 
 .play-list {
   text-align: left;
+  list-style: none;
 }
+
 
 .play-item {
   position: relative;
@@ -64,6 +72,16 @@ body {
   left: 0;
   top: 2px;
   font-weight: 900;
+}
+
+.volume-slider {
+  position: absolute;
+  width: 120px;
+  margin-left: 150px;
+}
+
+.play-list a.active {
+  color: yellow;
 }
 
 .item-active::before {
