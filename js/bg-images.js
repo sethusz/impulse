@@ -11,30 +11,6 @@ function getRandomNum(quantity = 20) {
     return String(num).padStart(2, 0);
 }
 
-function getPrevUnsplashSlide() {
-    randomNumForAPI = (--randomNum) % data.length >= 1 ?
-        (randomNum) % data.length : 
-            data.length-1;
-
-    const img = new Image();
-    img.src = data[randomNumForAPI].urls.full;
-    img.onload = () => {
-        document.body.style.backgroundImage = `url('${data[randomNumForAPI].urls.full}')`
-    }
-}
-
-function getNextUnsplashSlide() {
-    randomNumForAPI = (++randomNum) % data.length >= 1 ?
-        (randomNum) % data.length : 
-            data.length-1;
-
-    const img = new Image();
-    img.src = data[randomNumForAPI].urls.full;
-    img.onload = () => {
-        document.body.style.backgroundImage = `url('${data[randomNumForAPI].urls.full}')`
-    }
-}
-
 function getPrevSlide() {
     randomNum = (randomNum - 1) % 20 >= 1 ?
         String((randomNum - 1) % 20).padStart(2, 0) : 
@@ -64,28 +40,6 @@ function setBg() {
 
 setBg()
 
-function setBGImageFromUnsplash() {
-async function getUnsplashPhoto() {
-    try {
-        const res = await fetch('https://api.unsplash.com/photos/?client_id=vDHX60JttbOdprmFDvYon5uLQj6gs9RCtO_Ky-y4Yg8');
-        data = await res.json();
 
-        const img = new Image();
 
-        randomNumForAPI = +getRandomNum(data.length);
-        img.src = data[randomNumForAPI].urls.full;
-        img.onload = () => {
-            document.body.style.backgroundImage = `url('${data[randomNumForAPI].urls.full}')`
-        }
-    } catch(e) {
-        console.error(e);
-        console.error(data);
-    } 
-}
-
-prevSlide.addEventListener('click', getPrevUnsplashSlide);
-nextSlide.addEventListener('click', getNextUnsplashSlide);
-
-getUnsplashPhoto()
-}
 
